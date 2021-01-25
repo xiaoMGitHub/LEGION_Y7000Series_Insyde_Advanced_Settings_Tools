@@ -1,0 +1,2 @@
+# LEGION_Y7000Series_Insyde_Advanced_Settings_Tools
+支持一键修改 Insyde BIOS 隐藏选项的小工具，例如关闭CFG LOCK、修改DVMT等等
