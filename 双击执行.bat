@@ -200,6 +200,36 @@ echo.
 pause
 goto start
 
+:CloseThunderboltSecure
+pushd %~dp0
+WDFInst.exe
+H2OUVE-W-CONSOLEx64.exe -gv CloseThunderboltSecure_Original.txt -n Setup
+for /f "tokens=1,10" %%i in (CloseThunderboltSecure_Original.txt) do if %%i==00000500: (
+	if %%j == 00 ( 
+		echo Security Level已为禁用，不需要修改
+		del CloseThunderboltSecure_Original.txt
+		pause
+		goto start		
+	)
+)
+if exist "CloseThunderboltSecure.txt" (
+    echo 正在写入……
+    H2OUVE-W-CONSOLEx64.exe -sv CloseThunderboltSecure.txt -n Setup
+) else (
+    if exist "CloseThunderboltSecure_Original.txt" (
+		powershell -Command "(gc CloseThunderboltSecure_Original.txt) -replace '00000500: (.{23}) 01 (.*)', '00000500: $1 00 $2' | Out-File CloseThunderboltSecure.txt -Encoding ASCII"
+		echo 正在写入……
+		H2OUVE-W-CONSOLEx64.exe -sv CloseThunderboltSecure.txt -n SaSetup
+		del CloseThunderboltSecure_Original.txt
+		del CloseThunderboltSecure.txt
+	) else (
+		echo 无法找到 CloseThunderboltSecure_Original.txt
+	)
+)
+echo.
+pause
+goto start
+
 :start
 cls
 title 联想拯救者Y7000系列一键修改BIOS设置_V1.0
@@ -223,6 +253,8 @@ echo  4、关闭 CFG Lock
 echo.
 echo  5、修改 DVMT 为 64M
 echo.
+echo  6、关闭雷电安全特性
+echo.
 echo  0、退出
 echo.
 
@@ -236,6 +268,7 @@ if /i "%sel%"=="2" goto SetGPIO
 if /i "%sel%"=="3" goto BiosLock
 if /i "%sel%"=="4" goto CfgLock
 if /i "%sel%"=="5" goto SetDvmt
+if /i "%sel%"=="6" goto CloseThunderboltSecure
 echo 选择无效，请重新输入
 echo.
 goto sel
