@@ -13,5 +13,6 @@
 * 2020 款宏碁暗影骑士擎
 * Lenovo 小新-15IIL 2020
 * 小新 Pro 13
+* Thinkbook 15P
 
 ### 理论上 Insyde 的BIOS是通用的
